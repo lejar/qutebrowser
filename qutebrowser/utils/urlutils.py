@@ -372,7 +372,10 @@ def get_path_if_valid(pathstr, cwd=None, relative=False, check_exists=False):
         path = None
 
     if check_exists:
-        if path is not None and os.path.exists(path):
+        # Encode the path to utf-8 when checking for existence, because it
+        # could cause errors if the current encoding does not support the
+        # characters within.
+        if path is not None and os.path.exists(path.encode('utf-8')):
             log.url.debug("URL is a local file")
         else:
             path = None
